@@ -62,7 +62,7 @@ def create_drcov_header(modules):
     Takes a module dictionary and formats it as a drcov logfile header.
     """
 
-    if modules == None:
+    if modules is None:
         log.warn("create_drcov_header: modules is None!")
         return None
 
@@ -75,11 +75,9 @@ def create_drcov_header(modules):
     entries = []
 
     for m in modules:
-        # drcov: id, base, end, entry, checksum, timestamp, path
-        # frida doesnt give us entry, checksum, or timestamp
-        #  luckily, I don't think we need them.
+        # Ensure 'id' is an integer
         entry = '%3d, %#016x, %#016x, %#016x, %#08x, %#08x, %s' % (
-            m['id'], m['base'], m['end'], 0, 0, 0, m['path'])
+            int(m['id']), m['base'], m['end'], 0, 0, 0, m['path'])  # Ensure 'id' is cast to int
 
         entries.append(entry)
 
