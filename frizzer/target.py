@@ -121,7 +121,7 @@ class Target():
 
 
     def getModuleMap(self):
-        if self.frida_script == None:
+        if self.frida_script is None:
             log.warn("'%s'.getModuleMap: self.frida_script is None!" % self.name)
             return None
 
@@ -132,20 +132,20 @@ class Target():
             return None
 
         self.modules = []
-        for image in modulemap:
-            idx  = image['id']
+        for index, image in enumerate(modulemap):  # Assign a numeric ID
             path = image['path']
-            base = int(image['base'], 0)
-            end  = int(image['end'], 0)
+            base = int(image['base'], 16)  # Convert hex string to integer
             size = image['size']
+            end  = base + size
 
             m = {
-                    'id'    : idx,
-                    'path'  : path,
-                    'base'  : base,
-                    'end'   : end,
-                    'range' : range(base, end),
-                    'size'  : size}
+                'id'    : index,  # Assign a numeric ID instead of using 'name'
+                'path'  : path,
+                'base'  : base,
+                'end'   : end,
+                'range' : range(base, end),
+                'size'  : size
+            }
 
             self.modules.append(m)
         return self.modules
